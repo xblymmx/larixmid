@@ -108,7 +108,7 @@ func (la *Larixmid) Run(addr ...string) {
 	logger := log.New(os.Stdout, "[Larixmid]", 0)
 	finalAddr := detectAddr(addr...)
 	logger.Println("listening on", finalAddr)
-	logger.Fatalln(http.ListenAndServe(finalAddr, nil))
+	logger.Fatalln(http.ListenAndServe(finalAddr, la))
 }
 
 func detectAddr(addr ...string) string {
