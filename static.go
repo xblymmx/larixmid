@@ -4,16 +4,15 @@ import (
 	"net/http"
 	"strings"
 	"path"
-	"os"
 )
 
 type Static struct {
-	Dir http.FileSystem
-	Prefix string
+	Dir       http.FileSystem
+	Prefix    string
 	IndexFile string
 }
 
-func (s *Static) ServeHTTP(w http.ResponseWriter, r * http.Request, next http.HandlerFunc) {
+func (s *Static) ServeHTTP(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	if r.Method != "GET" && r.Method != "Head" {
 		next(w, r)
 		return
@@ -55,7 +54,7 @@ func (s *Static) ServeHTTP(w http.ResponseWriter, r * http.Request, next http.Ha
 		}
 
 		file = path.Join(file, s.IndexFile)
-		f, err = os.Open(file)
+		f, err = s.Dir.Open(file)
 		if err != nil {
 			next(w, r)
 			return
@@ -63,7 +62,7 @@ func (s *Static) ServeHTTP(w http.ResponseWriter, r * http.Request, next http.Ha
 		defer f.Close()
 
 		fstat, err = f.Stat()
-		if err != nil {
+		if err != nil || fstat.IsDir() {
 			next(w, r)
 			return
 		}
@@ -74,8 +73,8 @@ func (s *Static) ServeHTTP(w http.ResponseWriter, r * http.Request, next http.Ha
 
 func NewStatic(dir http.FileSystem) *Static {
 	return &Static{
-		Dir: dir,
-		Prefix: "",
+		Dir:       dir,
+		Prefix:    "",
 		IndexFile: "index.html",
 	}
 }
