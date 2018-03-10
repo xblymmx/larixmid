@@ -72,7 +72,7 @@ func (la *Larixmid) With(handlers ...Handler) *Larixmid {
 // Static - Static File Serving
 func Classic() *Larixmid {
 	// todo NewRecovery()
-	return New(NewLogger(), NewStatic(http.Dir("public")), NewRecover())
+	return New(NewLogger(), NewStatic(http.Dir("public")), NewRecovery())
 }
 
 // net/http.Handler
