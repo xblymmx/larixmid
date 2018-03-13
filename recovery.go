@@ -10,6 +10,7 @@ import (
 	"runtime/debug"
 )
 
+// TODO: panic Template add styles
 const (
 	nilRequestMessage = "Request is nil"
 	panicTextFormat   = "PANIC: %s\n%s"

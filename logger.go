@@ -11,19 +11,17 @@ import (
 
 type LoggerEntry struct {
 	StartTime string
-	Status int
-	Duration time.Duration
-	Hostname string
-	Method string
-	Path string
-	Request *http.Request
+	Status    int
+	Duration  time.Duration
+	Hostname  string
+	Method    string
+	Path      string
+	Request   *http.Request
 }
-
 
 var LoggerDefaultFormat = "{{.StartTime}} | {{.Status}} | \t {{.Duration}} | {{.Hostname}} | {{.Method}} {{.Path}} \n"
 
 var LoggerDefaultDateFormat = time.RFC3339
-
 
 type ALogger interface {
 	Println(...interface{})
@@ -33,13 +31,12 @@ type ALogger interface {
 type Logger struct {
 	ALogger
 	dateFormat string
-	template *template.Template
+	template   *template.Template
 }
-
 
 func NewLogger() *Logger {
 	logger := &Logger{
-		ALogger: log.New(os.Stdout, "[Larixmid]", 0),
+		ALogger:    log.New(os.Stdout, "[Larixmid]", 0),
 		dateFormat: LoggerDefaultDateFormat,
 	}
 	logger.SetFormat(LoggerDefaultFormat)
@@ -62,12 +59,12 @@ func (logger *Logger) ServeHTTP(w http.ResponseWriter, r *http.Request, next htt
 	res := w.(ResponseWriter)
 	log := LoggerEntry{
 		StartTime: start.Format(logger.dateFormat),
-		Status: res.Status(),
-		Duration: time.Since(start),
-		Method: r.Method,
-		Path: r.URL.Path,
-		Request: r,
-		Hostname: r.Host,
+		Status:    res.Status(),
+		Duration:  time.Since(start),
+		Method:    r.Method,
+		Path:      r.URL.Path,
+		Request:   r,
+		Hostname:  r.Host,
 	}
 
 	buf := &bytes.Buffer{}
@@ -75,4 +72,3 @@ func (logger *Logger) ServeHTTP(w http.ResponseWriter, r *http.Request, next htt
 	logger.Printf(buf.String())
 
 }
-

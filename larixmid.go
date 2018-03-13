@@ -54,7 +54,7 @@ type Larixmid struct {
 
 func New(handlers ...Handler) *Larixmid {
 	return &Larixmid{
-		handlers:    handlers,
+		handlers:   handlers,
 		middleware: build(handlers),
 	}
 }
@@ -116,7 +116,7 @@ func detectAddr(addr ...string) string {
 		return addr[0]
 	}
 	if port := os.Getenv("PORT"); port != "" {
-		return ":"+port
+		return ":" + port
 	}
 	return DefaultAddr
 }
@@ -141,7 +141,7 @@ func build(handlers []Handler) middleware {
 
 func voidMiddleware() middleware {
 	return middleware{
-		handler: HandlerFunc(func(w http.ResponseWriter, r *http.Request, handlerFunc http.HandlerFunc){}),
+		handler: HandlerFunc(func(w http.ResponseWriter, r *http.Request, handlerFunc http.HandlerFunc) {}),
 		next:    &middleware{},
 	}
 }
