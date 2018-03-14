@@ -15,19 +15,24 @@ const (
 	nilRequestMessage = "Request is nil"
 	panicTextFormat   = "PANIC: %s\n%s"
 	panicHTML         = `
+<html>
+<head><title>PANIC</title></head>
 <body>
 <h1>Panic</h1>
 
 <div>
 <h3> {{.RequestDescription}} </h3>
 <h4> {{.RecoveredPanic}} </h4>
+</div>
 
 {{ if .Stack }}
 <div>
 <h3> Runtime stack</h3>
 <h4> {{.StackToString}} </h4>
+{{ end }}
 </div>
 </body>
+</html>
 `
 )
 
